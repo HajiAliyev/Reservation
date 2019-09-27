@@ -1,0 +1,144 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--</body>-->
+<!--</html>-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div id="makeReservationModalId" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!---->
+        Modal content
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"></button>
+                <h4 class="modal-title">Reserv the Table</h4>
+            </div>
+            <div class="modal-body">
+                <!--<form method="post" th:action="" th:object="${tables}">-->
+                <form method="post" th:action="@{/findTableDataById}" th:object="${tablesDataById}">
+                    <label for="TableDbId">Table Number: </label><input th:text="*{id}" name="tableId" id="TableDbId"
+                                                                        type="text"
+                                                                        class="form-control" disabled>
+                    <label for="tableTypeId" disabled>Table Type '2' or '6': </label><input th:text="*{type}"
+                                                                                            name="typeId"
+                                                                                            id="tableTypeId"
+                                                                                            type="text"
+                                                                                            class="form-control">
+                    <label for="tableDescriptionId">Pin: </label><input th:text="*{description}" name="descriptionId"
+                                                                        id="tableDescriptionId" type="text"
+                                                                        class="form-control">
+                    <!--<label for="personSalaryId">Salary: </label><input th:value="*{salary}"name="salary" id="personSalaryId"-->
+                    <!--type="text" class="form-control">-->
+                    <!--<label for="personCreateDateId">Start Date: </label><input th:value="*{startDate}" name="startDate"-->
+                    <!--id="personCreateDateId"-->
+                    <!--type="text"-->
+                    <!--class="form-control datepicker">-->
+
+                    <input type="submit" id="addSubmitBtnId" class="btn-primary" value="Make Reservation">
+                    <!--<span id="showInfo"></span>-->
+                </form>
+
+
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                <!--&lt;%&ndash;<button type="button" id="addPersonBtnId" class="btn btn-primary">Add</button>&ndash;%&gt;-->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div id="makeReservationModalId" class="modal fade" role="dialog">-->
+    <!--<div class="modal-dialog">-->
+        <!--&lt;!&ndash;&ndash;&gt;-->
+        <!--Modal content-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal"></button>-->
+                <!--<h4 class="modal-title">Reserv the Table</h4>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--&lt;!&ndash;<form method="post" th:action="@{/addPerson}" th:object="${person}">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<label for="personNameId">Name: </label><input th:value="*{name}" name="name" id="personNameId" type="text"&ndash;&gt;-->
+                                                                   <!--&lt;!&ndash;class="form-control">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<label for="personSurnameId">Surname: </label><input th:value="*{surname}" name="surname" id="personSurnameId"&ndash;&gt;-->
+                                                                         <!--&lt;!&ndash;type="text" class="form-control">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<label for="personPinId">Pin: </label><input th:value="*{pin}" name="pin" id="personPinId" type="text"&ndash;&gt;-->
+                                                                 <!--&lt;!&ndash;class="form-control">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<label for="personSalaryId">Salary: </label><input th:value="*{salary}"name="salary" id="personSalaryId"&ndash;&gt;-->
+                                                                       <!--&lt;!&ndash;type="text" class="form-control">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<label for="personCreateDateId">Start Date: </label><input th:value="*{startDate}" name="startDate"&ndash;&gt;-->
+                                                                               <!--&lt;!&ndash;id="personCreateDateId"&ndash;&gt;-->
+                                                                               <!--&lt;!&ndash;type="text"&ndash;&gt;-->
+                                                                               <!--&lt;!&ndash;class="form-control datepicker">&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;<input type="submit" id="addSubmitBtnId" class="btn-primary" value="Add">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span id="showInfo"></span>&ndash;&gt;-->
+                <!--&lt;!&ndash;</form>&ndash;&gt;-->
+
+
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="modal-footer">&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;%&ndash;<button type="button" id="addPersonBtnId" class="btn btn-primary">Add</button>&ndash;%&gt;&ndash;&gt;-->
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    <!--</div>-->
+<!--</div>-->

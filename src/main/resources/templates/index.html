@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant reservation</title>
+
+
+    <link rel="stylesheet" th:href="@{/css/external/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/external/dataTables.bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/external/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/css/external/bootstrap-clockpicker.css}">
+
+    <link rel="stylesheet" th:href="@{/css/internal/style.css}">
+    <link rel="stylesheet" th:href="@{/css/internal/tableStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/internal/main.css}">
+
+    <script type="text/javascript" th:src="@{/js/external/jquery-3.4.1.js}"></script>
+    <script type="text/javascript" th:src="@{/js/external/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/external/jquery-ui.js}"></script>
+    <script type="text/javascript" th:src="@{/js/external/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/external/jquery.dataTables.js}"></script>
+    <script type="text/javascript" th:src="@{/js/external/dataTables.bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/js/external/bootstrap-clockpicker.js}"></script>
+
+
+    <script type="text/javascript" th:src="@{/js/internal/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/internal/action.js}"></script>
+
+    <!--<script type="text/javascript">-->
+    <!--$('.clockpicker').clockpicker();-->
+    <!--</script>-->
+
+
+</head>
+
+
+<body>
+<div class="page-header ">
+
+</div>
+<div class="container">
+
+
+    <div class="row">
+        <form method="post" th:action="@{/searchTables}" th:object="${reservationDto}"> <!---->
+            <div class="col-md-3">
+                <div class="col-md-6" style="text-align: right"><label>Choose Date: </label></div>
+
+                <div class="col-md-6">
+                    <input name="date" type="date" id="chooseDateId" class="" th:field="*{reservDate}"
+                           data-th-reservDate="*{reservDate}"
+                           required="required"
+                           style="width: 140%; height: 32px; text-align: center ; border-radius: 5px;">
+                </div> <!--  th:field="*{reservDate}"-->
+
+            </div>
+            <div class="col-md-3">
+                <div class="col-md-6" style="text-align: right"><label>Start Time: </label></div>
+                <div class="col-md-6">
+                    <div class="input-group clockpicker " data-placement="left" data-align="top" data-autoclose="true">
+                        <input type="text" id="startTimeId" name="startTime" th:field="*{startTime}"
+                               data-th-startTime="*{startTime}" required="required"
+                               class="form-control " data-default="06:00">  <!---->
+                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                    </div> <!---->
+                </div>
+
+
+            </div>
+            <div class="col-md-3">
+                <div class="col-md-6" style="text-align: right"><label>End Time: </label></div>
+
+                <div class="col-md-6">
+                    <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+                        <input type="text" id="endTimeId" name="endTime" class="form-control " th:field="*{endTime}"
+                               data-th-endTime="*{endTime}"
+                               required="required"
+                               data-default="23:00">
+                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                    </div> <!---->
+                </div>
+            </div>
+            <div class="col-md-3"><input type="submit" id="searchBtnId" value="Search" class="float-left"
+                                         style="width: 50%; height: 32px;">
+            </div>
+        </form>
+    </div>
+
+
+    <!--TABLES!!!!-->
+
+    <br>
+    <div class="row">
+        <!--<form th:action="@{/searchTables}">-->
+        <!--<div th:each="tl : ${tablesListUtil}">-->
+        <!--<div th:value="${tl.tables.id}"></div>-->
+
+        <!---->
+        <div class="col-md-6">
+            <b> 6 neferlik masalar (ailevi) </b> <br>
+            <!--<div th:each="tl6 : ${tableInfoDtoListType6}">-->
+            <!--<div class="tablesDivByStatus clickForTables hoverFloor btn-primary border border-info rounded shadow p-3 mb-5 bg-white rounded tableForFamily "-->
+            <!--data-th-id="${tl6.tablesDto.id}"-->
+            <!--data-th-type="${tl6.tablesDto.type}"-->
+            <!--data-th-status="${tl6.status}"-->
+            <!--data-th-description="${tl6.tablesDto.description}">-->
+            <!--<ul>-->
+            <!--<li th:text="'Table Number : ' + ${tl6.tablesDto.id}"></li>-->
+            <!--<li th:text="'Capacity : '+${tl6.tablesDto.description}"></li>-->
+            <!--<br>-->
+            <!--&lt;!&ndash;<li><input type="submit" value="Choose Table" class="hrefChooseTableDesign"&ndash;&gt;-->
+            <!--&lt;!&ndash;th:href="@{'/findTableDataById/'+${tl6.id}}"></input></li>&ndash;&gt;-->
+            <!--</ul>-->
+            <!--</div>-->
+
+            <!--</div>-->
+
+            <div th:id="'Type6'+${tl6.tablesDto.id}" class="col-md-4" th:each="tl6 : ${tableInfoDtoListType6}"
+                 style="width: 32%; float: left;">
+                <div th:switch="${tl6.status}">
+                    <div th:id="'type6Red'+${tl6.tablesDto.id}" th:case="'R'" style="background-color: red" disabled
+                         class="redTable tablesDivByStatus   hoverFloor btn-primary border border-info rounded shadow p-3 mb-5 bg-white rounded tableForFamily "
+                         data-th-id="${tl6.tablesDto.id}"
+                         data-th-type="${tl6.tablesDto.type}"
+                         data-th-status="${tl6.status}"
+                         data-th-description="${tl6.tablesDto.description}">
+                        <div class="tableTextDesign" disabled>
+                            <p disabled th:text="'Table Number : ' + ${tl6.tablesDto.id}"></p>
+                            <p disabled th:text="'Capacity : '+${tl6.tablesDto.description}"></p>
+                            <br>
+                            <!--<li><input type="submit" value="Choose Table" class="hrefChooseTableDesign"-->
+                            <!--th:href="@{'/findTableDataById/'+${tl6.id}}"></input></li>-->
+                        </div>
+                    </div>
+
+                    <div th:id="'type6Yellow'+${tl6.tablesDto.id}" th:case="'Y'" style="background-color: yellow"
+                         disabled="disabled"
+                         class="yellowTable tablesDivByStatus   hoverFloor btn-primary border border-info rounded shadow p-3 mb-5 bg-white rounded tableForFamily "
+                         data-th-id="${tl6.tablesDto.id}"
+                         data-th-type="${tl6.tablesDto.type}"
+                         data-th-status="${tl6.status}"
+                         data-th-description="${tl6.tablesDto.description}">
+                        <div class="tableTextDesign">
+                            <p th:text="'Table Number : ' + ${tl6.tablesDto.id}"></p>
+                            <p th:text="'Capacity : '+${tl6.tablesDto.description}"></p>
+                            <br>
+                            <!--<li><input type="submit" value="Choose Table" class="hrefChooseTableDesign"-->
+                            <!--th:href="@{'/findTableDataById/'+${tl6.id}}"></input></li>-->
+                        </div>
+                    </div>
+                    <div th:id="'type6Green'+${tl6.tablesDto.id}" th:case="'G'" style="background-color: green"
+                         class="greenTable tablesDivByStatus  clickForTables hoverFloor btn-primary border border-info rounded shadow p-3 mb-5 bg-white rounded tableForFamily "
+                         data-th-id="${tl6.tablesDto.id}"
+                         data-th-type="${tl6.tablesDto.type}"
+                         data-th-status="${tl6.status}"
+                         data-th-description="${tl6.tablesDto.description}">
+                        <div class="tableTextDesign">
+                            <p th:text="'Table Number : ' + ${tl6.tablesDto.id}"></p>
+                            <p th:text="'Capacity : '+${tl6.tablesDto.description}"></p>
+                            <br>
+                            <!--<li><input type="submit" value="Choose Table" class="hrefChooseTableDesign"-->
+                            <!--th:href="@{'/findTableDataById/'+${tl6.id}}"></input></li>-->
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+        <!---->
+        <div class="col-md-6">
+            <b>2 neferlik masalar</b> <br>
+            <div th:id="'Type2'+${tl2.tablesDto.id}" th:each="tl2 : ${tableInfoDtoListType2}"
+                 style="width: 50%; float: left;">
+                <div th:switch="${tl2.status}">
+                    <div th:id="'type2Red'+${tl2.tablesDto.id}" th:case="'R'" style="background-color: red" disabled
+                         class="redTable tablesDivByStatus circleDesign  hoverFloor btn-primary border border-info rounded shadow p-3 mb-5 bg-white rounded tableForFamily "
+                         data-th-id="${tl2.tablesDto.id}"
+                         data-th-type="${tl2.tablesDto.type}"
+                         data-th-status="${tl2.status}"
+                         data-th-description="${tl2.tablesDto.description}">
+                        <div class="tableTextDesign">
+                            <p th:text="'Table Number : ' + ${tl2.tablesDto.id}"></p>
+                            <p th:text="'Capacity : '+${tl2.tablesDto.description}"></p>
+                            <br>
+                            <!--<li><input type="submit" value="Choose Table" class="hrefChooseTableDesign"-->
+                            <!--th:href="@{'/findTableDataById/'+${tl6.id}}"></input></li>-->
+                        </div>
+                    </div>
+
+                    <div th:id="'type2Yellow'+${tl2.tablesDto.id}" th:case="'Y'" style="background-color: yellow"
+                         disabled
+                         class="yellowTable tablesDivByStatus circleDesign  hoverFloor btn-primary border border-info rounded shadow p-3 mb-5 bg-white rounded tableForFamily "
+                         data-th-id="${tl2.tablesDto.id}"
+                         data-th-type="${tl2.tablesDto.type}"
+                         data-th-status="${tl2.status}"
+                         data-th-description="${tl2.tablesDto.description}">
+                        <div class="tableTextDesign">
+                            <p th:text="'Table Number : ' + ${tl2.tablesDto.id}"></p>
+                            <p th:text="'Capacity : '+${tl2.tablesDto.description}"></p>
+                            <br>
+                            <!--<li><input type="submit" value="Choose Table" class="hrefChooseTableDesign"-->
+                            <!--th:href="@{'/findTableDataById/'+${tl6.id}}"></input></li>-->
+                        </div>
+                    </div>
+                    <div th:id="'type2Green'+${tl2.tablesDto.id}" th:case="'G'" style="background-color: green"
+                         class="greenTable tablesDivByStatus circleDesign clickForTables hoverFloor btn-primary border border-info rounded shadow p-3 mb-5 bg-white rounded tableForFamily "
+                         data-th-id="${tl2.tablesDto.id}"
+                         data-th-type="${tl2.tablesDto.type}"
+                         data-th-status="${tl2.status}"
+                         data-th-description="${tl2.tablesDto.description}">
+                        <div class="tableTextDesign">
+                            <p th:text="'Table Number : ' + ${tl2.tablesDto.id}"></p>
+                            <p th:text="'Capacity : '+${tl2.tablesDto.description}"></p>
+                            <br>
+                            <!--<li><input type="submit" value="Choose Table" class="hrefChooseTableDesign"-->
+                            <!--th:href="@{'/findTableDataById/'+${tl6.id}}"></input></li>-->
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+        <!--</form>-->
+    </div>
+    <!--MODAL-->
+    <div id="newReservationModalId">
+        <div id="makeReservationModalId" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!--Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"></button>
+                        <h4 class="modal-title">Reserv the Table</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" th:action="@{/reservation/addReservationByUser}" th:object="${reservationDtoModal}">
+                            <input type="hidden" id="userInputId" th:field="*{users.id}">
+                            <label for="TableDbId">Table Number: </label><input name="tableId" id="TableDbId" th:field="*{tables.id}"
+                                                                                type="text"
+                                                                                class="form-control" disabled>
+
+                            <!--<label for="userInputId" disabled>User Number: </label><input th:field="*{users.id}" required="required"-->
+                                                     <!--name="usersId"-->
+                                                     <!--id="userInputId"-->
+                                                     <!--type="text"-->
+                                                     <!--class="form-control">-->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="startTimeId">Reservation Day: </label> <input th:field="*{reservDate}" required="required"
+                                                                                              name="reservDate"
+                                                                                              id="reservDateInputId"
+                                                                                              type="text"
+                                                                                              class="form-control date-picker" disabled
+                                                                                              style="width: 90%">
+                                </div>
+
+
+                                <div class="input-group clockpicker col-md-4" data-placement="left" data-align="top"
+                                     data-autoclose="true" style="float: left;">
+                                    <label for="startTimeId">Start time: </label><input th:field="*{startTime}" required="required"
+                                                                                        name="startTime"
+                                                                                        id="startTimeInputId"
+                                                                                        type="text"
+                                                                                        class="form-control"
+                                                                                        style="width: 90%">
+                                </div>
+
+                                <div class="input-group clockpicker col-md-4" data-placement="left" data-align="top"
+                                     data-autoclose="true">
+                                    <label for="endTimeInputId">End time: </label><input th:field="*{endTime}" required="required"
+                                                                                         name="endTime"
+                                                                                         id="endTimeInputId"
+                                                                                         type="text"
+                                                                                         class="form-control"
+                                                                                         style="width: 90%">
+                                </div>
+                            </div>
+                            <input type="hidden" id="statusInputId" th:field="*{status}">
+                            <br>
+                            <input type="submit" id="reserveSubmitBtnId" class="btn btn-primary"
+                                   style="float: right; background-color: yellow; color: black;"
+                                   value="Make Reservation">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--<p th:case="'2'">-->
+    <!--<div class=" col-md-6 clickForTables circleDesign hoverFloor btn-primary border border-info rounded shadow p-3 mb-5 bg-white rounded tableForCouple"-->
+    <!--data-th-id="${tl.id}"-->
+    <!--data-th-type="${tl.type}"-->
+    <!--data-th-description="${tl.description}">-->
+    <!--<ul>-->
+    <!--<li th:text="'Table Number : ' + ${tl.id}"></li>-->
+    <!--<li th:text="'Capacity : '+${tl.description}"></li>-->
+    <!--<br>-->
+    <!--&lt;!&ndash;<li><input type="submit" value="Choose Table" class="hrefChooseTableDesign"&ndash;&gt;-->
+    <!--&lt;!&ndash;th:href="@{'/findTableDataById/'+${tl6.id}}"></input></li>&ndash;&gt;-->
+    <!--</ul>-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash;</p>&ndash;&gt;-->
+
+    <!--</div>-->
+    <!--<div th:value="${tl2.id}"-->
+    <!--data-th-id="${tl2.id}"-->
+    <!--data-th-type="${tl2.type}"-->
+    <!--data-th-description="${tl2.description}"-->
+    <!--class=" col-md-6 clickForTables circleDesign hoverFloor btn-primary border border-info rounded shadow p-3 mb-5 bg-white rounded tableForCouple">-->
+    <!--<ul>-->
+    <!--<br>-->
+    <!--<br>-->
+    <!--<li th:text="'Table Number : ' + ${tl2.id}"></li>-->
+    <!--<li th:text="'Capacity : '+${tl2.description}"></li>-->
+    <!--<br>-->
+    <!--&lt;!&ndash;<li><input type="submit" value="Choose Table" class="hrefChooseTableDesign"&ndash;&gt;-->
+    <!--&lt;!&ndash;th:href="@{'/findTableDataById/'+${tl6.id}}"></input></li>&ndash;&gt;-->
+    <!--</ul>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash;</form>&ndash;&gt;-->
+
+
+    <!--</div>-->
+    <!--</div>-->
+    <!--<h2>${message} Spring MVC 2 </h2>-->
+    <!--<div>-->
+    <!--<table id="coursePersonsTableId" class="table table-striped table-bordered" cellspacing="0" width="100%">-->
+    <!--<thead>-->
+    <!--<tr>-->
+    <!--<th>Id</th>-->
+    <!--<th>Name</th>-->
+    <!--<th>Surname</th>-->
+    <!--<th>Pin</th>-->
+    <!--<th>Start Date</th>-->
+    <!--<th>Salary</th>-->
+    <!--<th>Edit</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tfoot>-->
+    <!--<tr>-->
+    <!--<th>Id</th>-->
+    <!--<th>Name</th>-->
+    <!--<th>Surname</th>-->
+    <!--<th>Pin</th>-->
+    <!--<th>Start Date</th>-->
+    <!--<th>Salary</th>-->
+    <!--<th>Delete</th>-->
+    <!--<th>Edit</th>-->
+    <!--</tr>-->
+    <!--</tfoot>-->
+    <!--<tbody>-->
+    <!--&lt;!&ndash;<c:forEach items="${persons}" var="ps">&ndash;&gt;-->
+    <!--<tr th:each="ps : ${personList}">-->
+    <!--<td th:text="${ps.id}"></td>-->
+    <!--<td th:text="${ps.name}"></td>-->
+    <!--<td th:text="${ps.surname}"></td>-->
+    <!--<td th:text="${ps.pin}"></td>-->
+    <!--<td th:text="${#dates.format(ps.startDate,'yyyy-MM-dd')}"></td>-->
+    <!--<td th:text="${ps.salary}"></td>-->
+    <!--<td><a th:href="@{'/delete/'+${ps.id}}" style="color: red">Delete</a></td>-->
+    <!--<td><a href="#" onclick="edit(${ps.id})" style="color: red">Edit</a></td>-->
+    <!--</tr>-->
+    <!--&lt;!&ndash;</c:forEach>&ndash;&gt;-->
+    <!--</tbody>-->
+    <!--</table>-->
+
+    <!--&lt;!&ndash;Stollar burada &ndash;&gt;-->
+
+
+    <!--<div>-->
+    <!--&lt;!&ndash;<table id="tablesDataTableId">&ndash;&gt;-->
+    <!--&lt;!&ndash;<thead>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<th>id</th>&ndash;&gt;-->
+    <!--&lt;!&ndash;<th>type</th>&ndash;&gt;-->
+    <!--&lt;!&ndash;<th>description</th>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;</thead>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tbody>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr th:value="${tl.id}" th:each="tl : ${tablesList}" >&ndash;&gt;-->
+    <!--&lt;!&ndash;<td th:text="${tl.id}"></td>&ndash;&gt;-->
+    <!--&lt;!&ndash;<td th:text="${tl.type}"></td>&ndash;&gt;-->
+    <!--&lt;!&ndash;<td th:text="${tl.description}"></td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tbody>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;</table>&ndash;&gt;-->
+
+
+    <div>
+        <!--Modal includes-->
+
+        <!--<button id="showPersonDialog">New Person</button>-->
+        <!--<br>-->
+        <!--Modal-->
+        <!--<div id="addPersonModalId" class="modal fade" role="dialog">-->
+        <!--<div class="modal-dialog">-->
+        <!--&lt;!&ndash;&ndash;&gt;-->
+        <!--Modal content-->
+        <!--<div class="modal-content">-->
+        <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <!--<h4 class="modal-title">Person Add</h4>-->
+        <!--</div>-->
+        <!--<div class="modal-body">-->
+        <!--<form method="post" th:action="@{/addPerson}" th:object="${person}">-->
+        <!--<label for="personNameId">Name: </label><input th:value="*{name}" name="name"-->
+        <!--id="personNameId" type="text"-->
+        <!--class="form-control">-->
+        <!--<label for="personSurnameId">Surname: </label><input th:value="*{surname}" name="surname"-->
+        <!--id="personSurnameId"-->
+        <!--type="text" class="form-control">-->
+        <!--<label for="personPinId">Pin: </label><input th:value="*{pin}" name="pin" id="personPinId"-->
+        <!--type="text"-->
+        <!--class="form-control">-->
+        <!--<label for="personSalaryId">Salary: </label><input th:value="*{salary}" name="salary"-->
+        <!--id="personSalaryId"-->
+        <!--type="text" class="form-control">-->
+        <!--<label for="personCreateDateId">Start Date: </label><input th:value="*{startDate}"-->
+        <!--name="startDate"-->
+        <!--id="personCreateDateId"-->
+        <!--type="text"-->
+        <!--class="form-control datepicker">-->
+        <!--&lt;!&ndash;&ndash;&gt;-->
+        <!--<input type="submit" id="addSubmitBtnId" class="btn-primary" value="Add">-->
+        <!--<span id="showInfo"></span>-->
+        <!--</form>-->
+        <!--&lt;!&ndash;&ndash;&gt;-->
+        <!--&lt;!&ndash;&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="modal-footer">&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;%&ndash;<button type="button" id="addPersonBtnId" class="btn btn-primary">Add</button>&ndash;%&gt;&ndash;&gt;-->
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;&ndash;&gt;-->
+        <!--</div>-->
+        <!--</div>-->
+
+
+        <!--&lt;!&ndash;<form action="addStudent" method="post">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<label for="studentName">Student name: </label><input type="text" name="name"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="${student.name}" id="studentName"><br>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="studentSurname">Student surname: </label><input type="text" name="surname"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="${student.surname}"&ndash;&gt;-->
+        <!--&lt;!&ndash;id="studentSurname"><br>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="studentPin">Student pin: </label><input type="text" name="pin" value="${student.pin}"&ndash;&gt;-->
+        <!--&lt;!&ndash;id="studentPin"><br>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="studentPhone">Student phone: </label><input type="text" name="phone"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="${student.phone}"&ndash;&gt;-->
+        <!--&lt;!&ndash;id="studentPhone"><br>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<input type="submit" value="save">&ndash;&gt;-->
+
+
+        <!--&lt;!&ndash;</form>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<button id="showPersonDialogId">Add Person</button>&ndash;&gt;-->
+
+        <!--<br>-->
+
+        <!--&lt;!&ndash;<a href="${requestPath}/doLogout">logout</a>&ndash;&gt;-->
+
+
+        <!--&lt;!&ndash;&lt;!&ndash;<div class="container">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-md-6">&ndash;&gt;-->
+        <!--&lt;!&ndash;Table for Family (6-8)&ndash;&gt;-->
+        <!--&lt;!&ndash;<br>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<c:forEach items="tableFamilyList" var="tlf">&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" id="tableFamId1">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="familyTableId1" class="tableStyl familyTable"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="Table Family ${tlf}">&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" id="tableFamId2">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="familyTableId2" class="tableStyl familyTable"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="Table Family ${tlf}">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" id="tableFamId3">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="familyTableId3" class="tableStyl familyTable"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="Table Family ${tlf}">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" id="tableFamId4">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="familyTableId4" class="tableStyl familyTable"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="Table Family ${tlf}">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" id="tableFamId5">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="familyTableId5" class="tableStyl familyTable"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="Table Family ${tlf}">&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" id="tableFamId6">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="familyTableId6" class="tableStyl familyTable"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="Table Family ${tlf}">&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" id="tableFamId7">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="familyTableId7" class="tableStyl familyTable"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="Table Family ${tlf}">&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" id="tableFamId8">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="familyTableId8" class="tableStyl familyTable"&ndash;&gt;-->
+        <!--&lt;!&ndash;value="Table Family ${tlf}">&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;</c:forEach>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<div class="col-md-6">&ndash;&gt;-->
+        <!--&lt;!&ndash;Table for Couple (2-4) <br>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<c:forEach items="tableCoupleList" var="tlc">&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="coupleTableId1" class="tableStyl coupleTable" value="Table Couple ${tlc}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="coupleTableId2" class="tableStyl coupleTable" value="Table Couple ${tlc}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="coupleTableId3" class="tableStyl coupleTable" value="Table Couple ${tlc}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="coupleTableId4" class="tableStyl coupleTable" value="Table Couple ${tlc}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="coupleTableId5" class="tableStyl coupleTable" value="Table Couple ${tlc}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="coupleTableId6" class="tableStyl coupleTable" value="Table Couple ${tlc}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="coupleTableId7" class="tableStyl coupleTable" value="Table Couple ${tlc}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="submit" id="coupleTableId8" class="tableStyl coupleTable" value="Table Couple ${tlc}">&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;</c:forEach>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+    </div>
+</div>
+</body>
+</html>
